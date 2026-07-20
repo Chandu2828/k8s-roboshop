@@ -42,34 +42,34 @@ spec:
         project: roboshop 
         tier: backend 
         component: payment
-  spec:
-    containers:
-    - name: payment 
-      image:  chandu2828/payment:v1 
-      ports:
-      - name: liveness-port 
-        containerPort: 8080
-      startupProbe:
-        httpGet:
-          path: /health 
-          port: liveness-port 
-        failureThreshold: 12
-        periodSeconds: 10 
-      readinessProbe: 
-        httpGet:
-          path: /health 
-          port: liveness-port 
-        periodSeconds: 10 
-      livenessProbe: 
-        httpGet: 
-          path: /health 
-          port: liveness-port 
-        periodseconds: 10 
-      envFrom: 
-      - configMapRef:
-          name: payment 
-      - secretRef:
-          name: payment 
+    spec:
+      containers:
+      - name: payment 
+        image:  chandu2828/payment:v1 
+        ports:
+        - name: liveness-port 
+          containerPort: 8080
+        startupProbe:
+          httpGet:
+            path: /health 
+            port: liveness-port 
+          failureThreshold: 12
+          periodSeconds: 10 
+        readinessProbe: 
+          httpGet:
+            path: /health 
+            port: liveness-port 
+          periodSeconds: 10 
+        livenessProbe: 
+          httpGet: 
+            path: /health 
+            port: liveness-port 
+          periodseconds: 10 
+        envFrom: 
+        - configMapRef:
+            name: payment 
+        - secretRef:
+            name: payment 
 ---
 apiVersion: v1 
 kind: Service 
