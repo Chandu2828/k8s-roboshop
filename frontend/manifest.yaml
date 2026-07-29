@@ -4,7 +4,7 @@ metadata:
   name: nginx 
   namespace: roboshop 
 data: 
-  nginx.conf: |
+  nginx.conf: | # This is you key 
     user nginx;
     worker_processes auto;
     error_log /var/log/nginx/error.log notice;
@@ -97,16 +97,20 @@ spec:
         volumeMounts:
         - name: nginx-config 
           mountPath: /etc/nginx/nginx.conf 
-          subPath: nginx.conf 
-          readOnly: true 
+          subPath: nginx.conf  
+          # References the exact file/key from the volume source. This prevents Kubernetes from overwriting the entire /etc/nginx/ directory, keeping other default Nginx files intact.
+          readOnly: true
+          # Locks the mounted file inside the container, preventing Nginx or any application process from modifying it
       # This is pod level, it is like adding the disk to the pod 
       volumes:
       - name: nginx-config 
         configMap:
           name: nginx 
           items:
-          - key: nginx.conf 
-            path: nginx.conf 
+          - key: nginx.conf # The exact name from the configMap data 
+            path: nginx.conf # The filename created inside the volume 
+# key: The exact name of the file currently zipped up inside the ConfigMap.
+# path: The name you want to give that file when you unzip it into your container's volume.
 ---
 apiVersion: v1 
 kind: Service 
